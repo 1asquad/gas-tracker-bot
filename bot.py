@@ -1,16 +1,11 @@
 import telebot
 import requests
 import os
+from flask import Flask
+from threading import Thread
 
-# --- SÉCURITÉ : RÉCUPÉRATION DES CLÉS VIA VARIABLES D'ENVIRONNEMENT ---
-# Sur ton PC, tu peux remettre tes clés à la place des os.environ.get(...) pour tester
-# Mais pour GitHub, laisse os.environ.get !
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
 ETHERSCAN_API_KEY = os.environ.get('ETHERSCAN_API_KEY')
-
-# Vérification si les clés existent (pour éviter les crashs silencieux)
-if not TELEGRAM_TOKEN or not ETHERSCAN_API_KEY:
-    print("ERREUR: Les clés API ne sont pas configurées dans les variables d'environnement.")
 
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
@@ -48,8 +43,22 @@ def send_gas(message):
         )
         bot.reply_to(message, msg, parse_mode="Markdown")
     else:
-        bot.reply_to(message, "⚠️ Error. Check configuration.")
+        bot.reply_to(message, "⚠️ Error. Check API Key configuration.")
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "I am alive! The Bot is running."
+
+def run_web_server():
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
+
+def keep_alive():
+    t = Thread(target=run_web_server)
+    t.start()
 
 if __name__ == "__main__":
-    print("Bot en ligne...")
+    keep_alive()
     bot.infinity_polling()
