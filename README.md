@@ -1,5 +1,9 @@
 # ⛽ Ethereum Gas Tracker Bot
 
+
+[![Telegram](https://img.shields.io/badge/Telegram-Start_Bot-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/ethgastrackereth_bot)
+
+
 A Telegram Bot developed in Python that monitors Ethereum gas fees in real-time using the Etherscan V2 API.
 
 ## 🚀 Features
